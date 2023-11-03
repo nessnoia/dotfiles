@@ -30,12 +30,18 @@ Plugin 'mhinz/vim-signify'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-rhubarb'
 
+" Git conflict highlighting
+Plugin 'rhysd/conflict-marker.vim'
+
 " Fuzzy finder for vim
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
 
 " Quickfix / location list useful shortcuts
 Plugin 'tpope/vim-unimpaired'
+
+" File explorer tree
+Plugin 'preservim/nerdtree'
 
 " Better AgRaw
 Plugin 'jesseleite/vim-agriculture'
@@ -44,10 +50,10 @@ Plugin 'jesseleite/vim-agriculture'
 Plugin 'kh3phr3n/python-syntax'
 
 " Better go syntax
-Plugin 'faith/vim-go'
+Plugin 'fatih/vim-go'
 
-" May's deep space colour scheme
-Plugin 'Utagai/vim-deep-space'
+" Onedark colour theme
+Plugin 'joshdick/onedark.vim'
 
 " Pretty hacker boy bar
 Plugin 'vim-airline/vim-airline'
@@ -86,18 +92,12 @@ call vundle#end() " required
 
 "" Plugin Config
 
-"" Fuzzy Finder
+" Fuzzy Finder
 let g:rainbow_active = 1
 let g:fzf_preview_window = ['up:35%', 'ctrl-/']
 
-nnoremap <silent> <C-a> :Ag<cr>
-nnoremap <silent> <C-s> <Plug>AgRawWordUnderCursor<cr>
 
-nnoremap <silent <C-p> :Prettier<cr>
-nnoremap <C-f> :Files<CR>
-
-
-"" Airline
+" Airline
 let g:airline#extensions#tabline#enabled = 2
 let g:airline#extensions#tabline#show_buffers = 1
 let g:airline#extensions#tabline#left_alt_sep = '|'
@@ -105,7 +105,7 @@ let g:airline#extensions#tabline#formatter = 'default'
 let g:airline#theme = 'term'
 
 
-"" Go Vim
+" Go Vim
 let g:go_fmt_command = 'gofmt'
 
 " Fmt and simplify code
@@ -121,11 +121,13 @@ let g:go_highlight_operators = 1
 let g:go_doc_keyword_prg_enabled = 0
 
 
-"" Python support
+" Python support
 let g:python2_host_prog = '/usr/bin/python'
 let g:python3_host_prog = '/usr/local/bin/python3'
 
 
+" Git gutter symbols
+let g:signify_sign_change = '~'
 
 "" Vim Config
 " Enable mouse reporting
@@ -167,7 +169,7 @@ set showcmd
 set noswapfile
 
 " Complete option
-set completeopt
+set completeopt=menu,menuone
 
 " Allow backspacing over everything
 set backspace=indent,eol,start
@@ -178,6 +180,14 @@ imap <C-h> <left>
 imap <C-j> <down>
 imap <C-k> <up>
 imap <C-l> <right>
+
+
+" Fuzzy finding
+nnoremap <silent> <C-a> :Ag<cr>
+nmap <silent> <C-s> <Plug>AgRawWordUnderCursor<cr>
+
+nnoremap <silent> <C-p> :Prettier<cr>
+nnoremap <C-f> :Files<CR>
 
 
 " Tabs vs buffers - open all buffers in a new tab
@@ -195,6 +205,9 @@ nnoremap <C-x> :bw<CR>
 
 " Close buffer without closing window
 nnoremap <Leader>x :bp<bar>sp<bar>bn<bar>bd<CR>
+
+" Toggle nerd tree
+nnoremap <C-n> :NERDTreeToggle<CR>
 
 
 " Accelerated scrolling
@@ -227,7 +240,7 @@ syntax on
 colorscheme onedark
 
 
-# Start complete me
+" Start complete me
 filetype plugin on
 set omnifunc=syntaxcomplete#Complete
 
@@ -239,11 +252,11 @@ set autoread
 
 " Change cursor between modes
 " Vertical bar in insert mode
-let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+let &t_SI = "\e[6 q"
 " Block in normal mode
-let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+let &t_EI = "\e[2 q"
 " Underline in replace mode
-let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+let &t_SR = "\e[4 q"
 
 
 " Allow saving of files as sudo when I forgot to start vim using sudo.
