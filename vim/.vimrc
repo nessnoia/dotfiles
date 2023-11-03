@@ -190,6 +190,13 @@ nnoremap <silent> <C-p> :Prettier<cr>
 nnoremap <C-f> :Files<CR>
 
 
+" Git specific helpers
+" 'git web...' open in webbrowser (current branch)
+nmap gw :GBrowse<CR>
+nmap gb :G blame<CR>
+" 'git upstream' open upstream master in webbrowser
+nmap gu :GBrowse upstream/master:%<CR>
+
 " Tabs vs buffers - open all buffers in a new tab
 
 " Set hidden lets you open a new file while in an unwritten buffer
