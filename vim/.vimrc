@@ -109,7 +109,7 @@ let g:airline#theme = 'term'
 let g:go_fmt_command = 'gofmt'
 
 " Fmt and simplify code
-let g:go_fmt_options = '- s'
+let g:go_fmt_options = ' -s'
 let g:go_def_mode = 'gopls'
 let g:go_info_mode = 'gopls'
 
