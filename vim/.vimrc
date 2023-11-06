@@ -96,14 +96,12 @@ call vundle#end() " required
 let g:rainbow_active = 1
 let g:fzf_preview_window = ['up:35%', 'ctrl-/']
 
-
 " Airline
 let g:airline#extensions#tabline#enabled = 2
 let g:airline#extensions#tabline#show_buffers = 1
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tabline#formatter = 'default'
 let g:airline#theme = 'term'
-
 
 " Go Vim
 let g:go_fmt_command = 'gofmt'
@@ -120,14 +118,13 @@ let g:go_highlight_operators = 1
 
 let g:go_doc_keyword_prg_enabled = 0
 
-
 " Python support
 let g:python2_host_prog = '/usr/bin/python'
 let g:python3_host_prog = '/usr/local/bin/python3'
 
-
 " Git gutter symbols
 let g:signify_sign_change = '~'
+
 
 "" Vim Config
 " Enable mouse reporting
