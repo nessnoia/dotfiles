@@ -227,6 +227,7 @@ nnoremap gf :GoCallers<CR>
 nnoremap gv :GoVet -composites=false<CR>
 nnoremap gi :GoImplements<CR>
 nnoremap gt :GoTest<CR>
+nnoremap gl :GoDecls<CR>
 
 
 " Colours
