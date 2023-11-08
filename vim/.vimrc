@@ -193,6 +193,8 @@ nmap gw :GBrowse<CR>
 nmap gb :G blame<CR>
 " 'git upstream' open upstream master in webbrowser
 nmap gu :GBrowse upstream/master:%<CR>
+" 'git preview' open preview of commit on line
+nmap gp :0,3Git blame<CR>
 
 " Tabs vs buffers - open all buffers in a new tab
 
