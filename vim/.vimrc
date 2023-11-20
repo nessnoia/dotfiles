@@ -30,9 +30,6 @@ Plugin 'mhinz/vim-signify'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-rhubarb'
 
-" Git conflict highlighting
-Plugin 'rhysd/conflict-marker.vim'
-
 " Fuzzy finder for vim
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
@@ -124,7 +121,6 @@ let g:python3_host_prog = '/usr/local/bin/python3'
 
 " Git gutter symbols
 let g:signify_sign_change = '~'
-
 
 "" Vim Config
 " Enable mouse reporting
