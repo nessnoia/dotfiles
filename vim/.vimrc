@@ -71,6 +71,9 @@ Plugin 'pangloss/vim-javascript'
 Plugin 'evanleck/vim-svelte'
 Plugin 'HerringtonDarkholme/yats.vim'
 
+" Autoclose html
+Plugin 'alvan/vim-closetag'
+
 " Prettier
 Plugin 'prettier/vim-prettier', {
   \ 'do': 'npm install',
@@ -146,6 +149,10 @@ let g:ycm_semantic_triggers = {
 " Prettier autoformatting on save
 let g:prettier#autoformat = 1
 let g:prettier#autoformat_require_pragma = 0
+
+" Filetypes where closetag is active
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.svelte'
+let g:closetag_filetypes = 'html,xhtml,phtml,svelte'
 
 
 "" Vim Config
