@@ -189,7 +189,7 @@ set backspace=indent,eol,start
 
 " Reduce update time for better git signify
 " Default updatetime 4000ms is not good for async update
-set updatetime=100
+set updatetime=2000
 
 " Quick navigation while in insert mode
 imap <C-h> <left>
