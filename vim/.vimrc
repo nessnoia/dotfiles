@@ -122,6 +122,26 @@ let g:python3_host_prog = '/usr/local/bin/python3'
 " Git gutter symbols
 let g:signify_sign_change = '~'
 
+" Svelte
+let g:svelte_preprocessor_tags = [
+  \ { 'name': 'ts', 'tag': 'script', 'as': 'typescript' }
+  \ ]
+let g:svelte_preprocessors = ['ts']
+let g:ycm_language_server =
+  \ [
+  \   {
+  \     'name': 'svelte',
+  \     'cmdline': [ 'svelteserver', '--stdio' ],
+  \     'filetypes': [ 'svelte' ],
+	\ 		'project_root_files': [ 'package.json', '.git' ],
+  \   },
+  \ ]
+let g:ycm_semantic_triggers = {
+    \   'css': [ 're!^', 're!^\s+', ': ' ],
+    \   'scss': [ 're!^', 're!^\s+', ': ' ],
+    \ }
+
+
 "" Vim Config
 " Enable mouse reporting
 set mouse=a
@@ -267,3 +287,4 @@ let &t_SR = "\e[4 q"
 
 " Allow saving of files as sudo when I forgot to start vim using sudo.
 cmap w!! w !sudo tee > /dev/null %
+

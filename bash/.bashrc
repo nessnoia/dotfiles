@@ -264,3 +264,7 @@ export ANDROID_HOME="/home/vanessa/Android/Sdk"
 
 alias calibrate-pen-display="python3 /home/vanessa/tools/calibrate_pen_display/calibrate.py"
 
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
