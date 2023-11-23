@@ -136,10 +136,16 @@ let g:ycm_language_server =
 	\ 		'project_root_files': [ 'package.json', '.git' ],
   \   },
   \ ]
+
+" YouCompleteMe css triggers
 let g:ycm_semantic_triggers = {
     \   'css': [ 're!^', 're!^\s+', ': ' ],
     \   'scss': [ 're!^', 're!^\s+', ': ' ],
     \ }
+
+" Prettier autoformatting on save
+let g:prettier#autoformat = 1
+let g:prettier#autoformat_require_pragma = 0
 
 
 "" Vim Config
