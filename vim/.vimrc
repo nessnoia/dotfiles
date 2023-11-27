@@ -214,6 +214,7 @@ imap <C-l> <right>
 " Fuzzy finding
 nnoremap <silent> <C-a> :Ag<cr>
 nmap <silent> <C-s> <Plug>AgRawWordUnderCursor<cr>
+vmap <silent> <C-s> <Plug>AgRawVisualSelection<cr>
 
 nnoremap <silent> <C-p> :Prettier<cr>
 nnoremap <C-f> :Files<CR>
