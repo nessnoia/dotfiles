@@ -161,7 +161,7 @@ set mouse=a
 
 " Invisibles
 set list
-set listchars=eol:¬,tab:-→,trail:■
+set listchars=eol:¬,tab:—→,trail:■
 
 " Hard tabs
 set autoindent noexpandtab tabstop=2 shiftwidth=2
