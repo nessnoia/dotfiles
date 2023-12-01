@@ -222,10 +222,10 @@ nnoremap <C-f> :Files<CR>
 
 " Git specific helpers
 " 'git web...' open in webbrowser (current branch)
-nmap gw :GBrowse<CR>
+nmap gw :.GBrowse<CR>
 nmap gb :G blame<CR>
 " 'git upstream' open upstream master in webbrowser
-nmap gu :GBrowse upstream/master:%<CR>
+nmap gu :.GBrowse upstream/master:%<CR>
 " 'git preview' open preview of commit on line
 nmap gp :0,3Git blame<CR>
 
