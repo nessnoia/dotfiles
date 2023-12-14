@@ -147,8 +147,9 @@ let g:ycm_semantic_triggers = {
     \ }
 
 " Prettier autoformatting on save
-let g:prettier#autoformat = 1
+let g:prettier#autoformat_config_present = 1
 let g:prettier#autoformat_require_pragma = 0
+let g:prettier#autoformat_config_files = [".prettierrc"]
 
 " Filetypes where closetag is active
 let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.svelte'
@@ -214,7 +215,7 @@ imap <C-l> <right>
 " Fuzzy finding
 nnoremap <silent> <C-a> :Ag<cr>
 nmap <silent> <C-s> <Plug>AgRawWordUnderCursor<cr>
-vmap <silent> <C-s> <Plug>AgRawVisualSelection<cr>
+xmap <silent> <C-s> <Plug>AgRawVisualSelection<cr>
 
 nnoremap <silent> <C-p> :Prettier<cr>
 nnoremap <C-f> :Files<CR>
@@ -228,6 +229,8 @@ nmap gb :G blame<CR>
 nmap gu :.GBrowse upstream/master:%<CR>
 " 'git preview' open preview of commit on line
 nmap gp :0,3Git blame<CR>
+" I have no good reason for this one, the character was available lol.
+nmap gz :SignifyHunkUndo<CR>
 
 " Tabs vs buffers - open all buffers in a new tab
 
@@ -263,6 +266,7 @@ nnoremap gv :GoVet -composites=false<CR>
 nnoremap gi :GoImplements<CR>
 nnoremap gt :GoTest<CR>
 nnoremap gl :GoDecls<CR>
+nnoremap gx :GoRename<CR> 
 
 
 " Colours
