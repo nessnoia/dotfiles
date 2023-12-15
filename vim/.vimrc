@@ -151,6 +151,11 @@ let g:prettier#autoformat_config_present = 1
 let g:prettier#autoformat_require_pragma = 0
 let g:prettier#autoformat_config_files = [".prettierrc"]
 
+" Prettier config settings
+let g:prettier#config#tab_width = 4
+let g:prettier#config#use_tabs = 'false'
+let g:prettier#config#parser = 'json'
+
 " Filetypes where closetag is active
 let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.svelte'
 let g:closetag_filetypes = 'html,xhtml,phtml,svelte'
