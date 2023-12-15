@@ -261,7 +261,7 @@ noremap L 5l
 
 " Golang specific helpers
 nnoremap gr :GoReferrers<CR>
-nnoremap gf :GoCallers<CR>
+nnoremap gh :GoCallers<CR>
 nnoremap gv :GoVet -composites=false<CR>
 nnoremap gi :GoImplements<CR>
 nnoremap gt :GoTest<CR>
@@ -293,6 +293,10 @@ set shortmess-=S
 
 " Automatically reload buffer when file has been detected to be changed outside of Vim
 set autoread
+
+" Search up and down path for gf
+set path+=**;
+
 
 " Change cursor between modes
 " Vertical bar in insert mode
