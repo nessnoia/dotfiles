@@ -2,91 +2,86 @@ set nocompatible " be iMproved, required
 filetype off	" required
 set encoding=utf-8
 
-" Set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin()
 
 " ----- List of all Plugins -----
 
-" Let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
 " Automatically close quotes, parens, etc
-Plugin 'Raimondi/delimitMate'
+Plug 'Raimondi/delimitMate'
 
 " Colour code brackets
-Plugin 'luochen1990/rainbow'
+Plug 'luochen1990/rainbow'
 
 " Markdown preview in vim
-Plugin 'JamshedVesuna/vim-markdown-preview'
+Plug 'JamshedVesuna/vim-markdown-preview'
 
 " Markdown syntax
-Plugin 'plasticboy/vim-markdown'
+Plug 'plasticboy/vim-markdown'
 
 " Gutter symbols for git
-Plugin 'mhinz/vim-signify'
+Plug 'mhinz/vim-signify'
 
 " Git blame
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-rhubarb'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 
 " Fuzzy finder for vim
-Plugin 'junegunn/fzf'
-Plugin 'junegunn/fzf.vim'
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
 
 " Quickfix / location list useful shortcuts
-Plugin 'tpope/vim-unimpaired'
+Plug 'tpope/vim-unimpaired'
 
 " File explorer tree
-Plugin 'preservim/nerdtree'
+Plug 'preservim/nerdtree'
 
 " Better AgRaw
-Plugin 'jesseleite/vim-agriculture'
+Plug 'jesseleite/vim-agriculture'
 
 " Extends python highlighting
-Plugin 'kh3phr3n/python-syntax'
+Plug 'kh3phr3n/python-syntax'
 
 " Better go syntax
-Plugin 'fatih/vim-go'
+Plug 'fatih/vim-go'
 
 " Onedark colour theme
-Plugin 'joshdick/onedark.vim'
+Plug 'joshdick/onedark.vim'
 
 " Pretty hacker boy bar
-Plugin 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline'
 
 " Allows for theming the airline bar
-Plugin 'vim-airline/vim-airline-themes'
+Plug 'vim-airline/vim-airline-themes'
 
 " Autocomplete without hitting key combo
-Plugin 'Valloric/YouCompleteMe'
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 
 " Typescripting
-Plugin 'leafgarland/typescript-vim'
-Plugin 'peitalin/vim-jsx-typescript'
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
 
 " Svelte
-Plugin 'othree/html5.vim'
-Plugin 'pangloss/vim-javascript'
-Plugin 'evanleck/vim-svelte'
-Plugin 'HerringtonDarkholme/yats.vim'
+Plug 'othree/html5.vim'
+Plug 'pangloss/vim-javascript'
+Plug 'evanleck/vim-svelte'
+Plug 'HerringtonDarkholme/yats.vim'
 
 " Autoclose html
-Plugin 'alvan/vim-closetag'
+Plug 'alvan/vim-closetag'
 
 " Prettier
-Plugin 'prettier/vim-prettier', {
+Plug 'prettier/vim-prettier', {
   \ 'do': 'npm install',
   \ 'for': ['javascript', 'typescript', 'css', 'json', 'markdown', 'svelte', 'yaml', 'html'] }
 
 " Undo highlighting when search is done
-Plugin 'romainl/vim-cool'
+Plug 'romainl/vim-cool'
 
 " Better commenting
-Plugin 'tpope/vim-commentary'
+Plug 'tpope/vim-commentary'
 
 " All of your Plugins must be added before the following line
-call vundle#end() " required
+call plug#end() " required
 
 
 
