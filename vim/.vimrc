@@ -94,7 +94,9 @@ call vundle#end() " required
 
 " Fuzzy Finder
 let g:rainbow_active = 1
+let g:fzf_vim = {}
 let g:fzf_preview_window = ['up:35%', 'ctrl-/']
+let g:fzf_vim.listproc = { list -> fzf#vim#listproc#location(list) }
 
 " Airline
 let g:airline#extensions#tabline#enabled = 2
@@ -266,7 +268,7 @@ noremap L 5l
 
 " Golang specific helpers
 nnoremap gr :GoReferrers<CR>
-nnoremap gh :GoCallers<CR>
+nnoremap gC :GoCallers<CR>
 nnoremap gv :GoVet -composites=false<CR>
 nnoremap gi :GoImplements<CR>
 nnoremap gt :GoTest<CR>
