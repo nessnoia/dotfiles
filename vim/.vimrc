@@ -26,7 +26,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
 
 " Fuzzy finder for vim
-Plug 'junegunn/fzf'
+Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }
 Plug 'junegunn/fzf.vim'
 
 " Quickfix / location list useful shortcuts
@@ -42,7 +42,7 @@ Plug 'jesseleite/vim-agriculture'
 Plug 'kh3phr3n/python-syntax'
 
 " Better go syntax
-Plug 'fatih/vim-go'
+Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 
 " Onedark colour theme
 Plug 'joshdick/onedark.vim'
