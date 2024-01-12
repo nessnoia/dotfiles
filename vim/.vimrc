@@ -53,18 +53,22 @@ Plug 'vim-airline/vim-airline'
 " Allows for theming the airline bar
 Plug 'vim-airline/vim-airline-themes'
 
-" Autocomplete without hitting key combo
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+" Ale with signature help
+Plug 'nessnoia/vim-lsp-downloader'
+Plug 'nessnoia/ale'
 
-" Typescripting
-Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
+" Syntax highlighting
+Plug 'sheerun/vim-polyglot'
 
-" Svelte
-Plug 'othree/html5.vim'
-Plug 'pangloss/vim-javascript'
-Plug 'evanleck/vim-svelte'
-Plug 'HerringtonDarkholme/yats.vim'
+" " Typescripting
+" Plug 'leafgarland/typescript-vim'
+" Plug 'peitalin/vim-jsx-typescript'
+
+" " Svelte
+" Plug 'othree/html5.vim'
+" Plug 'pangloss/vim-javascript'
+" Plug 'evanleck/vim-svelte'
+" Plug 'HerringtonDarkholme/yats.vim'
 
 " Autoclose html
 Plug 'alvan/vim-closetag'
@@ -86,6 +90,31 @@ call plug#end() " required
 
 
 "" Plugin Config
+
+" Autocomplete tab through list
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <Down>   pumvisible() ? "\<C-n>" : "\<Down>"
+inoremap <expr> <Up> pumvisible() ? "\<C-p>" : "\<Up>"
+
+let g:lsp_export_to_path = 1
+
+" ALE
+let g:ale_completion_enabled = 1
+let g:ale_floating_preview = 1
+let g:ale_hover_cursor = 0
+let g:ale_syntax_highlight_floating_preview = 1
+let g:ale_floating_window_border = []
+let g:ale_floating_preview_popup_opts = {
+			\ 'close': 'none',
+			\ 'pos': 'botleft',
+			\ 'line': 'cursor-1',
+			\	}
+
+autocmd CursorHold * silent! ALEHover
+autocmd CursorMovedI * silent! ALESignatureHelp
+set completeopt=menuone,noinsert,noselect,menu
+set completeopt-=preview
 
 " Fuzzy Finder
 let g:rainbow_active = 1
@@ -125,21 +154,6 @@ let g:svelte_preprocessor_tags = [
   \ { 'name': 'ts', 'tag': 'script', 'as': 'typescript' }
   \ ]
 let g:svelte_preprocessors = ['ts']
-let g:ycm_language_server =
-  \ [
-  \   {
-  \     'name': 'svelte',
-  \     'cmdline': [ 'svelteserver', '--stdio' ],
-  \     'filetypes': [ 'svelte' ],
-	\ 		'project_root_files': [ 'package.json', '.git' ],
-  \   },
-  \ ]
-
-" YouCompleteMe css triggers
-let g:ycm_semantic_triggers = {
-    \   'css': [ 're!^', 're!^\s+', ': ' ],
-    \   'scss': [ 're!^', 're!^\s+', ': ' ],
-    \ }
 
 " Prettier autoformatting on save
 let g:prettier#autoformat_config_present = 1
@@ -194,9 +208,6 @@ set showcmd
 
 " Don't use swapfile
 set noswapfile
-
-" Complete option
-set completeopt=menu,menuone
 
 " Allow backspacing over everything
 set backspace=indent,eol,start
@@ -285,8 +296,8 @@ colorscheme onedark
 
 
 " Start complete me
-filetype plugin on
-set omnifunc=syntaxcomplete#Complete
+" filetype plugin on
+" set omnifunc=syntaxcomplete#Complete
 
 " No search hit bottom or top messages
 set shortmess-=S
