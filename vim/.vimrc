@@ -61,7 +61,8 @@ Plug 'vim-airline/vim-airline-themes'
 
 " Ale with signature help
 Plug 'nessnoia/vim-lsp-downloader'
-Plug 'nessnoia/ale'
+" Plug 'nessnoia/ale'
+Plug '~/development/ale'
 
 " Syntax highlighting
 Plug 'sheerun/vim-polyglot'
@@ -106,10 +107,11 @@ inoremap <expr> <Up> pumvisible() ? "\<C-p>" : "\<Up>"
 let g:lsp_export_to_path = 1
 
 " ALE
+let g:ale_syntax_highlight_floating_preview = 1
+
+let g:ale_hover_cursor = 0
 let g:ale_completion_enabled = 1
 let g:ale_floating_preview = 1
-let g:ale_hover_cursor = 0
-let g:ale_syntax_highlight_floating_preview = 1
 let g:ale_floating_window_border = []
 let g:ale_floating_preview_popup_opts = {
 			\ 'close': 'none',
@@ -177,6 +179,11 @@ let g:prettier#config#parser = 'json'
 let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.svelte'
 let g:closetag_filetypes = 'html,xhtml,phtml,svelte'
 
+" One Dark theme
+let g:onedark_color_overrides = {
+\ "background": { "gui": "#050505", "cterm": "232", "cterm16": "0" },
+\ "menu_grey": {"gui": "#383e4a", "cterm": "235", "cterm16": "0" },
+\}
 
 "" Vim Config
 " Enable mouse reporting
@@ -291,21 +298,10 @@ nnoremap gx :GoRename<CR>
 " Colours
 set termguicolors
 
-augroup colors
-  autocmd!
-  let s:background = { "gui": "#050505", "cterm": "232", "cterm16": "0" }
-  autocmd ColorScheme * call onedark#set_highlight("Normal", { "bg": s:background })
-augroup END
-
 
 " Syntax highlighting
 syntax on
 colorscheme onedark
-
-
-" Start complete me
-" filetype plugin on
-" set omnifunc=syntaxcomplete#Complete
 
 " No search hit bottom or top messages
 set shortmess-=S
@@ -315,7 +311,6 @@ set autoread
 
 " Search up and down path for gf
 set path+=**;
-
 
 " Change cursor between modes
 " Vertical bar in insert mode
