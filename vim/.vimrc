@@ -61,8 +61,7 @@ Plug 'vim-airline/vim-airline-themes'
 
 " Ale with signature help
 Plug 'nessnoia/vim-lsp-downloader'
-" Plug 'nessnoia/ale'
-Plug '~/development/ale'
+Plug 'nessnoia/ale'
 
 " Syntax highlighting
 Plug 'sheerun/vim-polyglot'
