@@ -67,16 +67,6 @@ Plug 'nessnoia/ale'
 " Syntax highlighting
 Plug 'sheerun/vim-polyglot'
 
-" " Typescripting
-" Plug 'leafgarland/typescript-vim'
-" Plug 'peitalin/vim-jsx-typescript'
-
-" " Svelte
-" Plug 'othree/html5.vim'
-" Plug 'pangloss/vim-javascript'
-" Plug 'evanleck/vim-svelte'
-" Plug 'HerringtonDarkholme/yats.vim'
-
 " Autoclose html
 Plug 'alvan/vim-closetag'
 
@@ -182,10 +172,7 @@ let g:signify_sign_change = '~'
 
 
 "" Svelte
-" let g:svelte_preprocessor_tags = [
-"   \ { 'name': 'ts', 'tag': 'script', 'as': 'typescript' }
-"   \ ]
-" let g:svelte_preprocessors = ['ts']
+let g:vim_svelte_plugin_use_typescript = 1
 
 
 "" Prettier
@@ -203,6 +190,8 @@ let g:prettier#config#parser = 'json'
 "" Filetypes where closetag is active
 let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.svelte'
 let g:closetag_filetypes = 'html,xhtml,phtml,svelte'
+" So delimitMate doesn't match <> when closetag is active
+au FileType svelte,html let b:delimitMate_matchpairs = "(:),[:],{:}"
 
 
 "" One Dark theme and colours
