@@ -71,9 +71,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'alvan/vim-closetag'
 
 " Prettier
-Plug 'prettier/vim-prettier', {
-  \ 'do': 'npm install',
-  \ 'for': ['javascript', 'typescript', 'css', 'json', 'markdown', 'svelte', 'yaml', 'html'] }
+Plug 'prettier/vim-prettier'
 
 " Undo highlighting when search is done
 Plug 'romainl/vim-cool'
