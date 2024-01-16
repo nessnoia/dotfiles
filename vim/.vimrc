@@ -108,6 +108,8 @@ let g:lsp_export_to_path = 1
 " ALE
 let g:ale_completion_enabled = 1
 let g:ale_floating_preview = 1
+let g:ale_set_highlights = 0
+let g:ale_virtualtext_cursor = 0
 let g:ale_hover_cursor = 0
 let g:ale_syntax_highlight_floating_preview = 1
 let g:ale_floating_window_border = []
