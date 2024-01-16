@@ -2,6 +2,7 @@ set nocompatible " be iMproved, required
 filetype off	" required
 set encoding=utf-8
 
+"" Auto download vim-plug if it is not downloaded already
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
   silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
@@ -66,23 +67,11 @@ Plug 'nessnoia/ale'
 " Syntax highlighting
 Plug 'sheerun/vim-polyglot'
 
-" " Typescripting
-" Plug 'leafgarland/typescript-vim'
-" Plug 'peitalin/vim-jsx-typescript'
-
-" " Svelte
-" Plug 'othree/html5.vim'
-" Plug 'pangloss/vim-javascript'
-" Plug 'evanleck/vim-svelte'
-" Plug 'HerringtonDarkholme/yats.vim'
-
 " Autoclose html
 Plug 'alvan/vim-closetag'
 
 " Prettier
-Plug 'prettier/vim-prettier', {
-  \ 'do': 'npm install',
-  \ 'for': ['javascript', 'typescript', 'css', 'json', 'markdown', 'svelte', 'yaml', 'html'] }
+Plug 'prettier/vim-prettier'
 
 " Undo highlighting when search is done
 Plug 'romainl/vim-cool'
@@ -94,23 +83,16 @@ Plug 'tpope/vim-commentary'
 call plug#end() " required
 
 
-
-"" Plugin Config
-
-" Autocomplete tab through list
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <Down>   pumvisible() ? "\<C-n>" : "\<Down>"
-inoremap <expr> <Up> pumvisible() ? "\<C-p>" : "\<Up>"
-
+"" Vim LSP Downloader
 let g:lsp_export_to_path = 1
 
-" ALE
+
+"" ALE
+let g:ale_hover_cursor = 0
 let g:ale_completion_enabled = 1
 let g:ale_floating_preview = 1
 let g:ale_set_highlights = 0
 let g:ale_virtualtext_cursor = 0
-let g:ale_hover_cursor = 0
 let g:ale_syntax_highlight_floating_preview = 1
 let g:ale_floating_window_border = []
 let g:ale_floating_preview_popup_opts = {
@@ -119,26 +101,52 @@ let g:ale_floating_preview_popup_opts = {
 			\ 'line': 'cursor-1',
 			\	}
 
+" Autocomplete tab through list
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <Down>   pumvisible() ? "\<C-n>" : "\<Down>"
+inoremap <expr> <Up> pumvisible() ? "\<C-p>" : "\<Up>"
+
 autocmd CursorHold * silent! ALEHover
 autocmd CursorMovedI * silent! ALESignatureHelp
+
 set completeopt=menuone,noinsert,noselect,menu
 set completeopt-=preview
 
-" Fuzzy Finder
+
+"" Fuzzy Finding
 let g:rainbow_active = 1
 let g:fzf_vim = {}
 let g:fzf_preview_window = ['up:35%', 'ctrl-/']
 let g:fzf_vim.listproc = { list -> fzf#vim#listproc#location(list) }
 
-" Airline
+nnoremap <silent> <C-a> :Ag<cr>
+nmap <silent> <C-s> <Plug>AgRawWordUnderCursor<cr>
+xmap <silent> <C-s> <Plug>AgRawVisualSelection<cr>
+
+nnoremap <silent> <C-p> :Prettier<cr>
+nnoremap <C-f> :Files<CR>
+
+
+"" Airline
 let g:airline#extensions#tabline#enabled = 2
 let g:airline#extensions#tabline#show_buffers = 1
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tabline#formatter = 'default'
 let g:airline#theme = 'term'
 
-" Go Vim
+
+"" Go Vim
 let g:go_fmt_command = 'gofmt'
+
+nnoremap gr :GoReferrers<CR>
+nnoremap gC :GoCallers<CR>
+nnoremap gv :GoVet -composites=false<CR>
+nnoremap gi :GoImplements<CR>
+nnoremap gt :GoTest<CR>
+nnoremap gh :GoDecls<CR>
+nnoremap gR :GoRename<CR> 
+
 
 " Fmt and simplify code
 let g:go_fmt_options = ' -s'
@@ -152,20 +160,22 @@ let g:go_highlight_operators = 1
 
 let g:go_doc_keywordprg_enabled = 0
 
-" Python support
+
+"" Python support
 let g:python2_host_prog = '/usr/bin/python'
 let g:python3_host_prog = '/usr/local/bin/python3'
 
-" Git gutter symbols
+
+"" Git gutter symbols
 let g:signify_sign_change = '~'
 
-" Svelte
-let g:svelte_preprocessor_tags = [
-  \ { 'name': 'ts', 'tag': 'script', 'as': 'typescript' }
-  \ ]
-let g:svelte_preprocessors = ['ts']
 
-" Prettier autoformatting on save
+"" Svelte
+let g:vim_svelte_plugin_use_typescript = 1
+
+
+"" Prettier
+" Autoformatting on save
 let g:prettier#autoformat_config_present = 1
 let g:prettier#autoformat_require_pragma = 0
 let g:prettier#autoformat_config_files = [".prettierrc"]
@@ -175,9 +185,39 @@ let g:prettier#config#tab_width = 4
 let g:prettier#config#use_tabs = 'false'
 let g:prettier#config#parser = 'json'
 
-" Filetypes where closetag is active
+
+"" Filetypes where closetag is active
 let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.svelte'
 let g:closetag_filetypes = 'html,xhtml,phtml,svelte'
+" So delimitMate doesn't match <> when closetag is active
+au FileType svelte,html let b:delimitMate_matchpairs = "(:),[:],{:}"
+
+
+"" One Dark theme and colours
+let g:onedark_color_overrides = {
+\ "background": { "gui": "#050505", "cterm": "232", "cterm16": "0" },
+\ "menu_grey": {"gui": "#383e4a", "cterm": "235", "cterm16": "0" },
+\}
+
+set termguicolors
+syntax on
+colorscheme onedark
+
+
+"" Git specific helpers
+" 'git web...' open in webbrowser (current branch)
+nmap gw :.GBrowse<CR>
+nmap gb :G blame<CR>
+" 'git upstream' open upstream master in webbrowser
+nmap gu :.GBrowse upstream/master:%<CR>
+" 'git preview' open preview of commit on line
+nmap gp :0,3Git blame<CR>
+" 'git undo'
+nmap gU :SignifyHunkUndo<CR>
+
+
+"" Nerd Tree
+nnoremap <C-n> :NERDTreeToggle<CR>
 
 
 "" Vim Config
@@ -232,29 +272,6 @@ imap <C-j> <down>
 imap <C-k> <up>
 imap <C-l> <right>
 
-
-" Fuzzy finding
-nnoremap <silent> <C-a> :Ag<cr>
-nmap <silent> <C-s> <Plug>AgRawWordUnderCursor<cr>
-xmap <silent> <C-s> <Plug>AgRawVisualSelection<cr>
-
-nnoremap <silent> <C-p> :Prettier<cr>
-nnoremap <C-f> :Files<CR>
-
-
-" Git specific helpers
-" 'git web...' open in webbrowser (current branch)
-nmap gw :.GBrowse<CR>
-nmap gb :G blame<CR>
-" 'git upstream' open upstream master in webbrowser
-nmap gu :.GBrowse upstream/master:%<CR>
-" 'git preview' open preview of commit on line
-nmap gp :0,3Git blame<CR>
-" I have no good reason for this one, the character was available lol.
-nmap gz :SignifyHunkUndo<CR>
-
-" Tabs vs buffers - open all buffers in a new tab
-
 " Set hidden lets you open a new file while in an unwritten buffer
 set hidden
 
@@ -269,45 +286,11 @@ nnoremap <C-x> :bw<CR>
 " Close buffer without closing window
 nnoremap <Leader>x :bp<bar>sp<bar>bn<bar>bd<CR>
 
-" Toggle nerd tree
-nnoremap <C-n> :NERDTreeToggle<CR>
-
-
 " Accelerated scrolling
 noremap J 5j
 noremap K 5k
 noremap H 5h
 noremap L 5l
-
-
-" Golang specific helpers
-nnoremap gr :GoReferrers<CR>
-nnoremap gC :GoCallers<CR>
-nnoremap gv :GoVet -composites=false<CR>
-nnoremap gi :GoImplements<CR>
-nnoremap gt :GoTest<CR>
-nnoremap gl :GoDecls<CR>
-nnoremap gx :GoRename<CR> 
-
-
-" Colours
-set termguicolors
-
-augroup colors
-  autocmd!
-  let s:background = { "gui": "#050505", "cterm": "232", "cterm16": "0" }
-  autocmd ColorScheme * call onedark#set_highlight("Normal", { "bg": s:background })
-augroup END
-
-
-" Syntax highlighting
-syntax on
-colorscheme onedark
-
-
-" Start complete me
-" filetype plugin on
-" set omnifunc=syntaxcomplete#Complete
 
 " No search hit bottom or top messages
 set shortmess-=S
@@ -318,7 +301,6 @@ set autoread
 " Search up and down path for gf
 set path+=**;
 
-
 " Change cursor between modes
 " Vertical bar in insert mode
 let &t_SI = "\e[6 q"
@@ -326,7 +308,6 @@ let &t_SI = "\e[6 q"
 let &t_EI = "\e[2 q"
 " Underline in replace mode
 let &t_SR = "\e[4 q"
-
 
 " Allow saving of files as sudo when I forgot to start vim using sudo.
 cmap w!! w !sudo tee > /dev/null %
