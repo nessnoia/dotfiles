@@ -63,7 +63,6 @@ let g:lsp_export_to_path = 1
 let g:ale_syntax_highlight_floating_preview = 1
 
 let g:ale_hover_cursor = 0
-let g:ale_completion_enabled = 1
 let g:ale_floating_preview = 1
 let g:ale_floating_window_border = []
 let g:ale_floating_preview_popup_opts = {
@@ -72,14 +71,7 @@ let g:ale_floating_preview_popup_opts = {
 			\ 'line': 'cursor-1',
 			\	}
 
-" Autocomplete tab through list
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <Down>   pumvisible() ? "\<C-n>" : "\<Down>"
-inoremap <expr> <Up> pumvisible() ? "\<C-p>" : "\<Up>"
-
 autocmd CursorHold * silent! ALEHover
-autocmd CursorMovedI * silent! ALESignatureHelp
 
 set completeopt=menuone,noinsert,noselect,menu
 set completeopt-=preview
