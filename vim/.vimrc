@@ -22,9 +22,6 @@ Plug 'luochen1990/rainbow'
 " Markdown preview in vim
 Plug 'JamshedVesuna/vim-markdown-preview'
 
-" Markdown syntax
-Plug 'plasticboy/vim-markdown'
-
 " Gutter symbols for git
 Plug 'mhinz/vim-signify'
 
@@ -44,9 +41,6 @@ Plug 'preservim/nerdtree'
 
 " Better AgRaw
 Plug 'jesseleite/vim-agriculture'
-
-" Extends python highlighting
-Plug 'kh3phr3n/python-syntax'
 
 " Better go syntax
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }

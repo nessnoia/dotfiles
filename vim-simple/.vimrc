@@ -32,6 +32,9 @@ Plug 'preservim/nerdtree'
 " Better AgRaw
 Plug 'jesseleite/vim-agriculture'
 
+" Onedark colour theme
+Plug 'joshdick/onedark.vim'
+
 " Pretty hacker boy bar
 Plug 'vim-airline/vim-airline'
 
@@ -108,7 +111,15 @@ let g:airline#theme = 'term'
 let g:signify_sign_change = '~'
 
 
+"" One Dark theme and colours
+let g:onedark_color_overrides = {
+\ "background": { "gui": "#050505", "cterm": "232", "cterm16": "0" },
+\ "menu_grey": {"gui": "#383e4a", "cterm": "235", "cterm16": "0" },
+\}
+
+set termguicolors
 syntax on
+colorscheme onedark
 
 
 "" Nerd Tree
@@ -195,10 +206,6 @@ set autoread
 
 " Search up and down path for gf
 set path+=**;
-
-" Make so vim does not open extremely tiny
-set lines=120
-set columns=80
 
 " Change cursor between modes
 " Vertical bar in insert mode
