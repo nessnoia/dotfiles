@@ -22,9 +22,6 @@ Plug 'luochen1990/rainbow'
 " Markdown preview in vim
 Plug 'JamshedVesuna/vim-markdown-preview'
 
-" Markdown syntax
-Plug 'plasticboy/vim-markdown'
-
 " Gutter symbols for git
 Plug 'mhinz/vim-signify'
 
@@ -44,9 +41,6 @@ Plug 'preservim/nerdtree'
 
 " Better AgRaw
 Plug 'jesseleite/vim-agriculture'
-
-" Extends python highlighting
-Plug 'kh3phr3n/python-syntax'
 
 " Better go syntax
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
@@ -118,7 +112,6 @@ set completeopt-=preview
 let g:rainbow_active = 1
 let g:fzf_vim = {}
 let g:fzf_preview_window = ['up:35%', 'ctrl-/']
-let g:fzf_vim.listproc = { list -> fzf#vim#listproc#location(list) }
 
 nnoremap <silent> <C-a> :Ag<cr>
 nmap <silent> <C-s> <Plug>AgRawWordUnderCursor<cr>
@@ -147,7 +140,6 @@ nnoremap gt :GoTest<CR>
 nnoremap gh :GoDecls<CR>
 nnoremap gR :GoRename<CR> 
 
-
 " Fmt and simplify code
 let g:go_fmt_options = ' -s'
 let g:go_def_mode = 'gopls'
@@ -159,6 +151,9 @@ let g:go_highlight_extra_types = 1
 let g:go_highlight_operators = 1
 
 let g:go_doc_keywordprg_enabled = 0
+
+" Make list quickfix cause locationlist is acting up
+let g:go_list_type = 'quickfix'
 
 
 "" Python support
