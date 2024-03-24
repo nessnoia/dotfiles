@@ -1,5 +1,5 @@
-set nocompatible " be iMproved, required
-filetype off	" required
+set nocompatible
+filetype plugin on
 set encoding=utf-8
 
 "" Auto download vim-plug if it is not downloaded already
@@ -54,9 +54,9 @@ Plug 'vim-airline/vim-airline'
 " Allows for theming the airline bar
 Plug 'vim-airline/vim-airline-themes'
 
-" Ale with signature help
+" LSP
 Plug 'nessnoia/vim-lsp-downloader'
-Plug 'nessnoia/ale'
+Plug 'yegappan/lsp'
 
 " Syntax highlighting
 Plug 'sheerun/vim-polyglot'
@@ -84,31 +84,56 @@ call plug#end() " required
 let g:lsp_export_to_path = 1
 
 
-"" ALE
-let g:ale_hover_cursor = 0
-let g:ale_completion_enabled = 1
-let g:ale_floating_preview = 1
-let g:ale_set_highlights = 0
-let g:ale_virtualtext_cursor = 0
-let g:ale_syntax_highlight_floating_preview = 1
-let g:ale_floating_window_border = []
-let g:ale_floating_preview_popup_opts = {
-			\ 'close': 'none',
-			\ 'pos': 'botleft',
-			\ 'line': 'cursor-1',
-			\	}
-
 " Autocomplete tab through list
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <Down>   pumvisible() ? "\<C-n>" : "\<Down>"
 inoremap <expr> <Up> pumvisible() ? "\<C-p>" : "\<Up>"
 
-" autocmd CursorHold * silent! ALEHover
-" autocmd CursorMovedI * silent! ALESignatureHelp
 
-set completeopt=menuone,noinsert,noselect,menu
-set completeopt-=preview
+"" LSP Setup
+let lspOpts = #{
+			\     autoHighlightDiags: v:true,
+			\     diagSignErrorText: 'E',
+			\     diagSignHintText: 'H',
+			\     diagSignIntoText: 'I',
+			\     diagSignWarningText: 'W',
+			\     showDiagInPopup: v:false,
+			\     showDiagInStatusLine: v:true,
+			\ }
+
+autocmd User LspSetup call LspOptionsSet(lspOpts)
+
+let lspServers = [#{
+	\	   name: 'go',
+	\	   filetype: ['go', 'gomod'],
+	\	   path: 'gopls',
+	\	   args: ['serve'],
+	\    syncInit: v:true,
+	\ }, #{
+	\    name: 'tsserver',
+	\    filetype: ['javascript', 'typescript', 'javascriptreact', 'typescriptreact'],
+	\    path: 'typescript-language-server',
+	\    args: ['stdio'],
+	\ }, #{
+	\    name: 'svelte-server',
+	\    filetype: ['svelte'],
+	\    path: 'svelte-language-server',
+	\    args: ['--stdio'],
+	\    rootSearch: ['package.json', '.git'],
+	\ }]
+
+autocmd User LspSetup call LspAddServer(lspServers)
+
+nnoremap gr :LspShowReferences<CR>
+nnoremap gi :GoToImpl<CR>
+nnoremap gR :LspRename<CR>
+nnoremap gD :LspGotoDefinition<CR>
+nnoremap gh :LspHover<CR>
+
+" Handy for jumping between errors
+nmap <silent> [E :LspDiag prev<CR>
+nmap <silent> ]E :LspDiag next<CR>
 
 
 "" Fuzzy Finding
@@ -136,15 +161,13 @@ let g:airline#theme = 'term'
 "" Go Vim
 let g:go_fmt_command = 'gofmt'
 
-nnoremap gr :GoReferrers<CR>
-nnoremap gC :GoCallers<CR>
-nnoremap gv :GoVet -composites=false<CR>
-nnoremap gi :GoImplements<CR>
-nnoremap gt :GoTest<CR>
-nnoremap gH :GoDecls<CR>
-nnoremap gR :GoRename<CR> 
-nnoremap gh :ALEHover<CR>
-
+autocmd FileType go nnoremap gr :GoReferrers<CR>
+autocmd FileType go nnoremap gC :GoCallers<CR>
+autocmd FileType go nnoremap gv :GoVet -composites=false<CR>
+autocmd FileType go nnoremap gi :GoImplements<CR>
+autocmd FileType go nnoremap gt :GoTest<CR>
+autocmd FileType go nnoremap gH :GoDecls<CR>
+autocmd FileType go nnoremap gR :GoRename<CR>
 
 " Fmt and simplify code
 let g:go_fmt_options = ' -s'
@@ -200,6 +223,7 @@ let g:onedark_color_overrides = {
 set termguicolors
 syntax on
 colorscheme onedark
+hi LspSigActiveParameter gui=reverse cterm=reverse
 
 
 "" Git specific helpers
@@ -213,6 +237,9 @@ nmap gp :0,3Git blame<CR>
 " 'git undo'
 nmap gU :SignifyHunkUndo<CR>
 
+
+"" List Buffers
+nnoremap gB :ls<CR>:b<Space>
 
 "" Nerd Tree
 nnoremap <C-n> :NERDTreeToggle<CR>
