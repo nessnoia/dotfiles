@@ -62,7 +62,10 @@ Plug 'nessnoia/ale'
 Plug 'sheerun/vim-polyglot'
 
 " Autoclose html
-Plug 'alvan/vim-closetag'
+" Plug 'alvan/vim-closetag'
+"
+" Surroundings
+Plug 'tpope/vim-surround'
 
 " Prettier
 Plug 'prettier/vim-prettier'
@@ -101,8 +104,8 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <Down>   pumvisible() ? "\<C-n>" : "\<Down>"
 inoremap <expr> <Up> pumvisible() ? "\<C-p>" : "\<Up>"
 
-autocmd CursorHold * silent! ALEHover
-autocmd CursorMovedI * silent! ALESignatureHelp
+" autocmd CursorHold * silent! ALEHover
+" autocmd CursorMovedI * silent! ALESignatureHelp
 
 set completeopt=menuone,noinsert,noselect,menu
 set completeopt-=preview
@@ -138,8 +141,9 @@ nnoremap gC :GoCallers<CR>
 nnoremap gv :GoVet -composites=false<CR>
 nnoremap gi :GoImplements<CR>
 nnoremap gt :GoTest<CR>
-nnoremap gh :GoDecls<CR>
+nnoremap gH :GoDecls<CR>
 nnoremap gR :GoRename<CR> 
+nnoremap gh :ALEHover<CR>
 
 
 " Fmt and simplify code
