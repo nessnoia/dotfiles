@@ -1,5 +1,5 @@
-set nocompatible
-filetype plugin on
+set nocompatible " be iMproved, required
+filetype off	" required
 set encoding=utf-8
 
 "" Auto download vim-plug if it is not downloaded already
@@ -16,18 +16,8 @@ call plug#begin()
 " Automatically close quotes, parens, etc
 Plug 'Raimondi/delimitMate'
 
-" Colour code brackets
-Plug 'luochen1990/rainbow'
-
-" Markdown preview in vim
-Plug 'JamshedVesuna/vim-markdown-preview'
-
 " Gutter symbols for git
 Plug 'mhinz/vim-signify'
-
-" Git blame
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rhubarb'
 
 " Fuzzy finder for vim
 Plug 'junegunn/fzf', { 'do': 'yes \| ./install' }
@@ -42,33 +32,18 @@ Plug 'preservim/nerdtree'
 " Better AgRaw
 Plug 'jesseleite/vim-agriculture'
 
-" Better go syntax
-Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
-
 " Onedark colour theme
 Plug 'joshdick/onedark.vim'
 
 " Pretty hacker boy bar
 Plug 'vim-airline/vim-airline'
 
-" Allows for theming the airline bar
-Plug 'vim-airline/vim-airline-themes'
-
-" LSP
+" Ale with signature help
 Plug 'nessnoia/vim-lsp-downloader'
-Plug 'yegappan/lsp'
+Plug 'nessnoia/ale'
 
 " Syntax highlighting
 Plug 'sheerun/vim-polyglot'
-
-" Autoclose html
-" Plug 'alvan/vim-closetag'
-"
-" Surroundings
-Plug 'tpope/vim-surround'
-
-" Prettier
-Plug 'prettier/vim-prettier'
 
 " Undo highlighting when search is done
 Plug 'romainl/vim-cool'
@@ -84,62 +59,29 @@ call plug#end() " required
 let g:lsp_export_to_path = 1
 
 
-" Autocomplete tab through list
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <Down>   pumvisible() ? "\<C-n>" : "\<Down>"
-inoremap <expr> <Up> pumvisible() ? "\<C-p>" : "\<Up>"
+"" ALE
+let g:ale_syntax_highlight_floating_preview = 1
 
+let g:ale_hover_cursor = 0
+let g:ale_floating_preview = 1
+let g:ale_floating_window_border = []
+let g:ale_floating_preview_popup_opts = {
+			\ 'close': 'none',
+			\ 'pos': 'botleft',
+			\ 'line': 'cursor-1',
+			\	}
 
-"" LSP Setup
-let lspOpts = #{
-			\     autoHighlightDiags: v:true,
-			\     diagSignErrorText: 'E',
-			\     diagSignHintText: 'H',
-			\     diagSignIntoText: 'I',
-			\     diagSignWarningText: 'W',
-			\     showDiagInPopup: v:false,
-			\     showDiagInStatusLine: v:true,
-			\ }
+autocmd CursorHold * silent! ALEHover
 
-autocmd User LspSetup call LspOptionsSet(lspOpts)
-
-let lspServers = [#{
-	\	   name: 'go',
-	\	   filetype: ['go', 'gomod'],
-	\	   path: 'gopls',
-	\	   args: ['serve'],
-	\    syncInit: v:true,
-	\ }, #{
-	\    name: 'tsserver',
-	\    filetype: ['javascript', 'typescript', 'javascriptreact', 'typescriptreact'],
-	\    path: 'typescript-language-server',
-	\    args: ['stdio'],
-	\ }, #{
-	\    name: 'svelte-server',
-	\    filetype: ['svelte'],
-	\    path: 'svelte-language-server',
-	\    args: ['--stdio'],
-	\    rootSearch: ['package.json', '.git'],
-	\ }]
-
-autocmd User LspSetup call LspAddServer(lspServers)
-
-nnoremap gr :LspShowReferences<CR>
-nnoremap gi :GoToImpl<CR>
-nnoremap gR :LspRename<CR>
-nnoremap gD :LspGotoDefinition<CR>
-nnoremap gh :LspHover<CR>
-
-" Handy for jumping between errors
-nmap <silent> [E :LspDiag prev<CR>
-nmap <silent> ]E :LspDiag next<CR>
+set completeopt=menuone,noinsert,noselect,menu
+set completeopt-=preview
 
 
 "" Fuzzy Finding
 let g:rainbow_active = 1
 let g:fzf_vim = {}
 let g:fzf_preview_window = ['up:35%', 'ctrl-/']
+let g:fzf_vim.listproc = { list -> fzf#vim#listproc#location(list) }
 
 nnoremap <silent> <C-a> :Ag<cr>
 nmap <silent> <C-s> <Plug>AgRawWordUnderCursor<cr>
@@ -157,63 +99,8 @@ let g:airline#extensions#tabline#formatter = 'default'
 let g:airline#theme = 'term'
 
 
-"" Go Vim
-let g:go_fmt_command = 'gofmt'
-
-autocmd FileType go nnoremap gr :GoReferrers<CR>
-autocmd FileType go nnoremap gC :GoCallers<CR>
-autocmd FileType go nnoremap gv :GoVet -composites=false<CR>
-autocmd FileType go nnoremap gi :GoImplements<CR>
-autocmd FileType go nnoremap gt :GoTest<CR>
-autocmd FileType go nnoremap gH :GoDecls<CR>
-autocmd FileType go nnoremap gR :GoRename<CR>
-
-" Fmt and simplify code
-let g:go_fmt_options = ' -s'
-let g:go_def_mode = 'gopls'
-let g:go_info_mode = 'gopls'
-
-" Extra syntax highlighting
-let g:go_highlight_function_calls = 1
-let g:go_highlight_extra_types = 1
-let g:go_highlight_operators = 1
-
-let g:go_doc_keywordprg_enabled = 0
-
-" Make list quickfix cause locationlist is acting up
-let g:go_list_type = 'quickfix'
-
-
-"" Python support
-let g:python2_host_prog = '/usr/bin/python'
-let g:python3_host_prog = '/usr/local/bin/python3'
-
-
 "" Git gutter symbols
 let g:signify_sign_change = '~'
-
-
-"" Svelte
-let g:vim_svelte_plugin_use_typescript = 1
-
-
-"" Prettier
-" Autoformatting on save
-let g:prettier#autoformat_config_present = 1
-let g:prettier#autoformat_require_pragma = 0
-let g:prettier#autoformat_config_files = [".prettierrc"]
-
-" Prettier config settings
-let g:prettier#config#tab_width = 4
-let g:prettier#config#use_tabs = 'false'
-let g:prettier#config#parser = 'json'
-
-
-"" Filetypes where closetag is active
-let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.svelte'
-let g:closetag_filetypes = 'html,xhtml,phtml,svelte'
-" So delimitMate doesn't match <> when closetag is active
-au FileType svelte,html let b:delimitMate_matchpairs = "(:),[:],{:}"
 
 
 "" One Dark theme and colours
@@ -225,23 +112,7 @@ let g:onedark_color_overrides = {
 set termguicolors
 syntax on
 colorscheme onedark
-hi LspSigActiveParameter gui=reverse cterm=reverse
 
-
-"" Git specific helpers
-" 'git web...' open in webbrowser (current branch)
-nmap gw :.GBrowse<CR>
-nmap gb :G blame<CR>
-" 'git upstream' open upstream master in webbrowser
-nmap gu :.GBrowse upstream/master:%<CR>
-" 'git preview' open preview of commit on line
-nmap gp :0,3Git blame<CR>
-" 'git undo'
-nmap gU :SignifyHunkUndo<CR>
-
-
-"" List Buffers
-nnoremap gB :ls<CR>:b<Space>
 
 "" Nerd Tree
 nnoremap <C-n> :NERDTreeToggle<CR>
