@@ -76,6 +76,9 @@ Plug 'romainl/vim-cool'
 " Better commenting
 Plug 'tpope/vim-commentary'
 
+" Auto update tags
+Plug 'ludovicchabant/vim-gutentags'
+
 " All of your Plugins must be added before the following line
 call plug#end() " required
 
@@ -98,8 +101,9 @@ let lspOpts = #{
 			\     diagSignHintText: 'H',
 			\     diagSignIntoText: 'I',
 			\     diagSignWarningText: 'W',
+			\     ignoreMissingServer: v:true,
 			\     showDiagInPopup: v:false,
-			\     showDiagInStatusLine: v:true,
+			\     showDiagOnStatusLine: v:true,
 			\ }
 
 autocmd User LspSetup call LspOptionsSet(lspOpts)
@@ -112,9 +116,10 @@ let lspServers = [#{
 	\    syncInit: v:true,
 	\ }, #{
 	\    name: 'tsserver',
-	\    filetype: ['javascript', 'typescript', 'javascriptreact', 'typescriptreact'],
+	\    filetype: ['typescript', 'javascript', 'typescriptreact', 'javascriptreact'],
 	\    path: 'typescript-language-server',
-	\    args: ['stdio'],
+	\    args: ['--stdio'],
+	\    debug: v:true,
 	\ }, #{
 	\    name: 'svelte-server',
 	\    filetype: ['svelte'],
@@ -126,9 +131,9 @@ let lspServers = [#{
 autocmd User LspSetup call LspAddServer(lspServers)
 
 nnoremap gr :LspShowReferences<CR>
-nnoremap gi :GoToImpl<CR>
+nnoremap gi :LspGotoImpl<CR>
 nnoremap gR :LspRename<CR>
-nnoremap gD :LspGotoDefinition<CR>
+nnoremap gd :LspGotoDefinition<CR>
 nnoremap gh :LspHover<CR>
 
 " Handy for jumping between errors
@@ -136,11 +141,33 @@ nmap <silent> [E :LspDiag prev<CR>
 nmap <silent> ]E :LspDiag next<CR>
 
 
+"" Gutentags
+let g:gutentags_cache_dir = expand('~/.cache/vim/ctags')
+let g:gutentags_ctags_extra_args = [
+      \ '--tag-relative=yes',
+      \ '--fields=+ailmnS',
+      \ ]
+let g:gutentags_ctags_exclude = [
+      \ '*.git',
+      \ 'build',
+      \ 'bin',
+      \ 'node_modules',
+      \ 'cache',
+      \ '*-lock.json',
+      \ '*.lock',
+      \ '*bundle*.js',
+      \ '*build*.js',
+      \ '*.json',
+      \ '*.class',
+      \ '*.csproj.user',
+      \ '*.cache',
+      \ ]
+
+
 "" Fuzzy Finding
 let g:rainbow_active = 1
 let g:fzf_vim = {}
 let g:fzf_preview_window = ['up:35%', 'ctrl-/']
-let g:fzf_vim.listproc = { list -> fzf#vim#listproc#location(list) }
 
 nnoremap <silent> <C-a> :Ag<cr>
 nmap <silent> <C-s> <Plug>AgRawWordUnderCursor<cr>
@@ -180,6 +207,9 @@ let g:go_highlight_extra_types = 1
 let g:go_highlight_operators = 1
 
 let g:go_doc_keywordprg_enabled = 0
+
+" Make list quickfix cause locationlist is acting up
+let g:go_list_type = 'quickfix'
 
 
 "" Python support
