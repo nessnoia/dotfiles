@@ -14,10 +14,10 @@ call plug#begin()
 " ----- List of all Plugins -----
 
 " Automatically close quotes, parens, etc
-" Plug 'Raimondi/delimitMate'
+Plug 'Raimondi/delimitMate'
 
 " Colour code brackets
-" Plug 'luochen1990/rainbow'
+Plug 'luochen1990/rainbow'
 
 " Gutter symbols for git
 Plug 'mhinz/vim-signify'
@@ -42,23 +42,24 @@ Plug 'jesseleite/vim-agriculture'
 " Better go syntax
 " Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 
-" Onedark colour theme
-Plug 'joshdick/onedark.vim'
+" Colour themes
+Plug 'navarasu/onedark.nvim'
 
 " Pretty hacker boy bar
-Plug 'vim-airline/vim-airline'
-
-" Allows for theming the airline bar
-Plug 'vim-airline/vim-airline-themes'
+Plug 'nvim-lualine/lualine.nvim'
 
 " LSP
 Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'neovim/nvim-lspconfig'
 
+" Autocomplete
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/nvim-cmp'
+
 " Treesitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-"
+
 " Surroundings
 Plug 'tpope/vim-surround'
 
@@ -71,16 +72,13 @@ Plug 'romainl/vim-cool'
 " Better commenting
 Plug 'tpope/vim-commentary'
 
+" Autoclose HTML tags
+Plug 'windwp/nvim-ts-autotag'
+
 " All of your Plugins must be added before the following line
 call plug#end() " required
 
 lua require('config')
-
-" Autocomplete tab through list
-" inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-" inoremap <expr> <Down>   pumvisible() ? "\<C-n>" : "\<Down>"
-" inoremap <expr> <Up> pumvisible() ? "\<C-p>" : "\<Up>"
 
 "" Fuzzy Finding
 let g:rainbow_active = 1
@@ -95,12 +93,12 @@ nnoremap <silent> <C-p> :Prettier<cr>
 nnoremap <C-f> :Files<CR>
 
 
-"" Airline
-let g:airline#extensions#tabline#enabled = 2
-let g:airline#extensions#tabline#show_buffers = 1
-let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline#extensions#tabline#formatter = 'default'
-let g:airline#theme = 'term'
+"" Lualine
+" let g:airline#extensions#tabline#enabled = 2
+" let g:airline#extensions#tabline#show_buffers = 1
+" let g:airline#extensions#tabline#left_alt_sep = '|'
+" let g:airline#extensions#tabline#formatter = 'default'
+" let g:airline#theme = 'term'
 
 
 "" Python support
@@ -110,10 +108,6 @@ let g:python3_host_prog = '/usr/local/bin/python3'
 
 "" Git gutter symbols
 let g:signify_sign_change = '~'
-
-
-"" Svelte
-" let g:vim_svelte_plugin_use_typescript = 1
 
 
 "" Prettier
@@ -128,23 +122,9 @@ let g:prettier#config#use_tabs = 'false'
 let g:prettier#config#parser = 'json'
 
 
-"" Filetypes where closetag is active
-" let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.svelte'
-" let g:closetag_filetypes = 'html,xhtml,phtml,svelte'
-" So delimitMate doesn't match <> when closetag is active
-" au FileType svelte,html let b:delimitMate_matchpairs = "(:),[:],{:}"
-
-
-"" One Dark theme and colours
-let g:onedark_color_overrides = {
-\ "background": { "gui": "#050505", "cterm": "232", "cterm16": "0" },
-\ "menu_grey": {"gui": "#383e4a", "cterm": "235", "cterm16": "0" },
-\}
-
 set termguicolors
 syntax on
 colorscheme onedark
-hi LspSigActiveParameter gui=reverse cterm=reverse
 
 
 "" Git specific helpers
@@ -171,11 +151,11 @@ nnoremap <C-n> :NERDTreeToggle<CR>
 " set mouse=a
 
 " Invisibles
-" set list
+set list
 set listchars=eol:¬,tab:—→,trail:■
 
 " Hard tabs
-" set autoindent noexpandtab tabstop=2 shiftwidth=2
+set autoindent noexpandtab tabstop=2 shiftwidth=2
 
 " Show matching brackets
 set showmatch
@@ -198,7 +178,7 @@ set noswapfile
 
 " Reduce update time for better git signify
 " Default updatetime 4000ms is not good for async update
-" set updatetime=2000
+set updatetime=2000
 
 " Quick navigation while in insert mode
 imap <C-h> <left>
