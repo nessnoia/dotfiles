@@ -60,6 +60,7 @@ Plug 'yegappan/lsp'
 
 " Syntax highlighting
 Plug 'sheerun/vim-polyglot'
+Plug 'maxmellon/vim-jsx-pretty'
 
 " Autoclose html
 " Plug 'alvan/vim-closetag'
@@ -77,7 +78,7 @@ Plug 'romainl/vim-cool'
 Plug 'tpope/vim-commentary'
 
 " Auto update tags
-Plug 'ludovicchabant/vim-gutentags'
+" Plug 'ludovicchabant/vim-gutentags'
 
 " All of your Plugins must be added before the following line
 call plug#end() " required
@@ -126,6 +127,11 @@ let lspServers = [#{
 	\    path: 'svelte-language-server',
 	\    args: ['--stdio'],
 	\    rootSearch: ['package.json', '.git'],
+	\ }, #{
+	\    name: 'yaml-server',
+	\    filetype: ['yaml'],
+	\    path: 'yaml-language-server',
+	\    args: ['--stdio'],
 	\ }]
 
 autocmd User LspSetup call LspAddServer(lspServers)
@@ -142,26 +148,34 @@ nmap <silent> ]E :LspDiag next<CR>
 
 
 "" Gutentags
-let g:gutentags_cache_dir = expand('~/.cache/vim/ctags')
-let g:gutentags_ctags_extra_args = [
-      \ '--tag-relative=yes',
-      \ '--fields=+ailmnS',
-      \ ]
-let g:gutentags_ctags_exclude = [
-      \ '*.git',
-      \ 'build',
-      \ 'bin',
-      \ 'node_modules',
-      \ 'cache',
-      \ '*-lock.json',
-      \ '*.lock',
-      \ '*bundle*.js',
-      \ '*build*.js',
-      \ '*.json',
-      \ '*.class',
-      \ '*.csproj.user',
-      \ '*.cache',
-      \ ]
+" let g:gutentags_cache_dir = expand('~/.cache/vim/ctags')
+" let g:gutentags_ctags_extra_args = [
+"       \ '--tag-relative=yes',
+"       \ '--fields=+ailmnS',
+"       \ ]
+" let g:gutentags_ctags_exclude = [
+"       \ '*.git',
+"       \ 'build',
+"       \ 'bin',
+"       \ 'node_modules',
+"       \ 'cache',
+"       \ '*-lock.json',
+"       \ '*.lock',
+"       \ '*bundle*.js',
+"       \ '*build*.js',
+"       \ '*.json',
+"       \ '*.class',
+"       \ '*.csproj.user',
+"       \ '*.cache',
+" 			\ 'bazel-*',
+"       \ '*.md'
+"       \ ]
+" function! GutentagsEnableFunc(path) abort
+"     return fnamemodify(a:path, ':e') != 'go' || fnamemodify(a:path, ':e') != 'java'
+" endfunction
+
+" let g:gutentags_enabled_user_func = 'GutentagsEnableFunc'
+" command! -nargs=0 GutentagsClearCache call system('rm ' . g:gutentags_cache_dir . '/*')
 
 
 "" Fuzzy Finding
@@ -175,6 +189,7 @@ xmap <silent> <C-s> <Plug>AgRawVisualSelection<cr>
 
 nnoremap <silent> <C-p> :Prettier<cr>
 nnoremap <C-f> :Files<CR>
+let $FZF_DEFAULT_COMMAND="fd --exclude={.git,.idea,.vscode,.sass-cache,node_modules,tmp} --type f"
 
 
 "" Airline
@@ -229,7 +244,7 @@ let g:vim_svelte_plugin_use_typescript = 1
 " Autoformatting on save
 let g:prettier#autoformat_config_present = 1
 let g:prettier#autoformat_require_pragma = 0
-let g:prettier#autoformat_config_files = [".prettierrc"]
+let g:prettier#autoformat_config_files = [".prettierrc", ".prettierrc.js"]
 
 " Prettier config settings
 let g:prettier#config#tab_width = 4
