@@ -10,9 +10,9 @@ require("mason-lspconfig").setup_handlers {
 	end,
 	-- Next, you can provide a dedicated handler for specific servers.
 	-- For example, a handler override for the `rust_analyzer`:
-	["rust_analyzer"] = function()
-		require("rust-tools").setup {}
-	end
+	-- ["rust_analyzer"] = function()
+	-- 	require("rust-tools").setup {}
+	-- end
 }
 
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -51,15 +51,19 @@ vim.api.nvim_create_autocmd('LspAttach', {
 		bufmap({ 'n', 'x' }, 'gX', '<cmd>lua vim.lsp.buf.format({async = true})<cr>')
 
 		-- Show diagnostics in a floating window
-		bufmap('n', 'gl', '<cmd>lua vim.diagnostic.open_float()<cr>')
+		bufmap('n', 'gE', '<cmd>lua vim.diagnostic.open_float()<cr>')
 
 		-- Move to the previous diagnostic
-		bufmap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<cr>')
+		bufmap('n', '[E', '<cmd>lua vim.diagnostic.goto_prev()<cr>')
 
 		-- Move to the next diagnostic
-		bufmap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<cr>')
+		bufmap('n', ']E', '<cmd>lua vim.diagnostic.goto_next()<cr>')
 	end
 })
+
+vim.diagnostic.config{
+	virtual_text = false
+}
 
 
 -- Tree sitting
@@ -69,6 +73,10 @@ require('nvim-treesitter.configs').setup { highlight = { enable = true } }
 -- Autocomplete
 local cmp = require 'cmp'
 cmp.setup({
+	preselect = cmp.PreselectMode.None,
+  completion = {
+    completeopt = "menu,menuone,noselect"
+  },
 	snippet = {
 		-- REQUIRED - you must specify a snippet engine
 		expand = function(args)
@@ -117,7 +125,17 @@ require('onedark').setup({
 -- Status bar
 require('lualine').setup {
 	options = {
-		theme = 'onedark'
+		theme = 'onedark',
 		-- ... your lualine config
+	},
+	sections = {
+		lualine_c = {
+			{
+				'filename',
+				path = 1,
+			}
+		}
 	}
 }
+
+require("bufferline").setup{}
