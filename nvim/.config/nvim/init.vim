@@ -4,11 +4,15 @@ set encoding=utf-8
 
 "" Auto download vim-plug if it is not downloaded already
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
-if empty(glob(data_dir . '/autoload/plug.vim'))
-  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 endif
 
+" Run PlugInstall if there are missing plugins
+autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \| PlugInstall --sync | source $MYVIMRC
+\| endif
 call plug#begin()
 
 " ----- List of all Plugins -----
@@ -47,6 +51,8 @@ Plug 'navarasu/onedark.nvim'
 
 " Pretty hacker boy bar
 Plug 'nvim-lualine/lualine.nvim'
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
 
 " LSP
 Plug 'williamboman/mason.nvim'
@@ -108,13 +114,15 @@ let g:python3_host_prog = '/usr/local/bin/python3'
 
 "" Git gutter symbols
 let g:signify_sign_change = '~'
+let g:signify_priority = 1
+let g:signify_sign_overwrite = 0
 
 
 "" Prettier
 " Autoformatting on save
-let g:prettier#autoformat_config_present = 1
-let g:prettier#autoformat_require_pragma = 0
-let g:prettier#autoformat_config_files = [".prettierrc"]
+" let g:prettier#autoformat_config_present = 1
+" let g:prettier#autoformat_require_pragma = 0
+" let g:prettier#autoformat_config_files = [".prettierrc"]
 
 " Prettier config settings
 let g:prettier#config#tab_width = 4
