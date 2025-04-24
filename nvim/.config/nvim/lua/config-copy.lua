@@ -137,5 +137,88 @@ require('lualine').setup {
 		}
 	}
 }
-
 require("bufferline").setup{}
+
+require("dapui").setup()
+
+-- local neotest = require("neotest")
+-- neotest.setup({
+--   adapters = {
+--     require("rustaceanvim.neotest"),
+--   },
+--   -- output = {
+--   --   open = { open_win = function() vim.cmd("split") end }
+--  output = { enabled = false, open_on_run = false },
+--  output_panel = { enabled = true, open = "split | resize 15"},
+--  consumers = {
+--  attach_or_output = function(client)
+-- 	 local M = {}
+-- 	 function M.open(opts)
+-- 	   opts = opts or {}
+-- 	   local pos = neotest.run.get_tree_from_args(opts)
+-- 	   if pos and client:is_running(pos:data().id) then
+-- 	     neotest.run.attach()
+-- 	   else
+-- 	     neotest.output_panel.open({ enter = true })
+-- 	   end
+-- 	 end
+
+-- 	 return M
+--  end,
+--  },
+-- })
+
+-- vim.api.nvim_create_user_command("NTestOutput", function()
+-- 	neotest.run.run()
+-- 	local handle
+-- 	handle, _ = vim.loop.spawn(
+-- 		"sleep",
+-- 		{ args = { "3s" }, stdio = nil },
+-- 		vim.schedule_wrap(function(_)
+-- 			handle:close()
+-- 			neotest.attach_or_output.open()
+-- 		end)
+-- 	)
+-- end, {}) -- }
+
+-- require("dap").adapters.lldb = {
+-- 	type = "executable",
+-- 	command = "rust-lldb", -- adjust as needed
+-- 	name = "rust-lldb",
+-- }
+-- Rustacean
+-- vim.g.rustaceanvim = {
+--   -- Plugin configuration
+--   tools = {
+-- 	  test_executer = "background"
+--   },
+-- }
+  -- LSP configuration
+--   -- server = {
+--   --   on_attach = function(client, bufnr)
+--   --     -- you can also put keymaps in here
+--   --   end,
+--   --   default_settings = {
+--   --     -- rust-analyzer language server configuration
+--   --     ['rust-analyzer'] = {
+--   --     },
+--   --   },
+--   -- },
+--   -- DAP configuration
+  --dap = {
+			-----@type DapExecutableConfig
+		--adapter = {
+				--type = 'executable',
+				---- args = {''},
+				--name = 'rust-lldb',
+				--command = 'rust-lldb',
+		--},
+	--},
+--}
+		-- executable = {
+		-- type = "lldb",
+		-- command = "rust-lldb",
+	-- }
+-- 		-- args = {},
+--   },
+-- }

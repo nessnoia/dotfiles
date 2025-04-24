@@ -84,6 +84,16 @@ Plug 'tpope/vim-commentary'
 " Autoclose HTML tags
 Plug 'windwp/nvim-ts-autotag'
 
+" Debugger
+Plug 'nvim-neotest/nvim-nio'
+Plug 'rcarriga/nvim-dap-ui'
+Plug 'mfussenegger/nvim-dap'
+
+" Test
+" Plug 'nvim-lua/plenary.nvim'
+" Plug 'antoinemadec/FixCursorHold.nvim'
+" Plug 'nvim-neotest/neotest'
+
 " All of your Plugins must be added before the following line
 call plug#end() " required
 
@@ -133,6 +143,11 @@ let g:prettier#config#use_tabs = 'false'
 let g:prettier#config#parser = 'json'
 
 
+" Rust
+let g:rustfmt_command = 'rustup run nightly rustfmt'
+let g:rustfmt_autosave = 1
+
+
 set termguicolors
 syntax on
 colorscheme onedark
@@ -157,6 +172,23 @@ nnoremap gB :ls<CR>:b<Space>
 nnoremap <C-n> :NERDTreeToggle<CR>
 
 
+"" Debugging
+nnoremap <silent> <Leader>c <Cmd>lua require'dap'.continue()<CR>
+nnoremap <silent> <Leader>so <Cmd>lua require'dap'.step_over()<CR>
+nnoremap <silent> <Leader>si <Cmd>lua require'dap'.step_into()<CR>
+nnoremap <silent> <Leader>se <Cmd>lua require'dap'.step_out()<CR>
+nnoremap <silent> <Leader>b <Cmd>lua require'dap'.toggle_breakpoint()<CR>
+nnoremap <silent> <Leader>B <Cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>
+nnoremap <silent> <Leader>lp <Cmd>lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>
+nnoremap <silent> <Leader>do <Cmd>lua require'dapui'.open()<CR>
+nnoremap <silent> <Leader>dc <Cmd>lua require'dapui'.close()<CR>
+
+
+"" Tests
+nnoremap <silent> gt <Cmd>lua require'neotest'.run.run()<CR>
+nnoremap <silent> gT <Cmd>lua require'neotest'.run.run({strategy = "dap"})<CR>
+nnoremap <silent> <Leader>t <Cmd>lua require'neotest'.run.run(vim.fn.expand("%"))<CR>
+
 "" Vim Config
 " Enable mouse reporting
 " set mouse=a
@@ -166,7 +198,8 @@ set list
 set listchars=eol:¬,tab:—→,trail:■
 
 " Hard tabs
-set autoindent noexpandtab tabstop=2 shiftwidth=2
+" set autoindent expandtab tabstop=4 shiftwidth=4
+set autoindent
 
 " Show matching brackets
 set showmatch
@@ -190,6 +223,9 @@ set noswapfile
 " Reduce update time for better git signify
 " Default updatetime 4000ms is not good for async update
 set updatetime=2000
+
+" Always leave some lines at the bottom
+set scrolloff=2
 
 " Quick navigation while in insert mode
 imap <C-h> <left>
