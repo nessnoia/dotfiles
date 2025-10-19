@@ -13,6 +13,9 @@ require("conform").setup({
 		else
 			lsp_format_opt = "fallback"
 		end
+		if vim.b[bufnr].disable_autoformat then
+			return false
+		end
 		return {
 			timeout_ms = 500,
 			lsp_format = lsp_format_opt,
