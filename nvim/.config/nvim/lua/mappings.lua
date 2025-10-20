@@ -2,7 +2,32 @@ local map = vim.keymap.set
 
 -- Git
 map("n", "gb", ":Git blame<CR>", { desc = "Toggle git blame" })
-map("n", "gU", ":Gitsigns reset_hunk<CR>", { desc = "Reset git hunk" })
+require("gitsigns").setup({
+	on_attach = function(bufnr)
+		local gitsigns = require("gitsigns")
+
+		map("n", "gU", function()
+			gitsigns.reset_hunk()
+		end)
+
+		-- Navigation
+		map("n", "]c", function()
+			if vim.wo.diff then
+				vim.cmd.normal({ "]c", bang = true })
+			else
+				gitsigns.nav_hunk("next")
+			end
+		end)
+
+		map("n", "[c", function()
+			if vim.wo.diff then
+				vim.cmd.normal({ "[c", bang = true })
+			else
+				gitsigns.nav_hunk("prev")
+			end
+		end)
+	end,
+})
 
 map("n", "gu", ":.GBrowse upstream/main:%<CR>", { desc = "Open link in browser from remote upstream" })
 map("v", "gu", ":.GBrowse upstream/main:%<CR>", { desc = "Open link in browser from remote upstream" })
