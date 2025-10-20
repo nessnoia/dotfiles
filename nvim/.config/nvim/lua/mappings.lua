@@ -2,7 +2,32 @@ local map = vim.keymap.set
 
 -- Git
 map("n", "gb", ":Git blame<CR>", { desc = "Toggle git blame" })
-map("n", "gU", ":Gitsigns reset_hunk<CR>", { desc = "Reset git hunk" })
+require("gitsigns").setup({
+	on_attach = function(bufnr)
+		local gitsigns = require("gitsigns")
+
+		map("n", "gU", function()
+			gitsigns.reset_hunk()
+		end)
+
+		-- Navigation
+		map("n", "]c", function()
+			if vim.wo.diff then
+				vim.cmd.normal({ "]c", bang = true })
+			else
+				gitsigns.nav_hunk("next")
+			end
+		end)
+
+		map("n", "[c", function()
+			if vim.wo.diff then
+				vim.cmd.normal({ "[c", bang = true })
+			else
+				gitsigns.nav_hunk("prev")
+			end
+		end)
+	end,
+})
 
 map("n", "gu", ":.GBrowse upstream/main:%<CR>", { desc = "Open link in browser from remote upstream" })
 map("v", "gu", ":.GBrowse upstream/main:%<CR>", { desc = "Open link in browser from remote upstream" })
@@ -31,12 +56,44 @@ map("n", "L", "5l")
 local builtin = require("telescope.builtin")
 map("n", "<C-f>", builtin.find_files, { desc = "Search Files" })
 map("n", "<C-s>", builtin.grep_string, { desc = "Search current Word" })
+map("v", "<C-s>", builtin.grep_string, { desc = "Search current Word" })
 map("n", "<C-a>", builtin.live_grep, { desc = "Search by Grep" })
 map("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
 -- Shortcut for searching your Neovim configuration files
 vim.keymap.set("n", "<leader>sn", function()
 	builtin.find_files({ cwd = vim.fn.stdpath("config") })
 end, { desc = "[S]earch [N]eovim files" })
+
+-- Telescope
+require("telescope").setup({
+	defaults = {
+		mappings = {
+			i = {
+				["<M-Down>"] = require("telescope.actions").cycle_history_next,
+				["<M-Up>"] = require("telescope.actions").cycle_history_prev,
+				-- If multiple selected, open all. Else, open as normal.
+				["<CR>"] = function(prompt_bufnr)
+					local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
+					local multi = picker:get_multi_selection()
+					if not vim.tbl_isempty(multi) then
+						require("telescope.actions").close(prompt_bufnr)
+						for _, j in pairs(multi) do
+							if j.path ~= nil then
+								vim.cmd(string.format("%s %s", "edit", j.path))
+							end
+						end
+					else
+						require("telescope.actions").select_default(prompt_bufnr)
+					end
+				end,
+			},
+			n = {
+				["<M-Down>"] = require("telescope.actions").cycle_history_next,
+				["<M-Up>"] = require("telescope.actions").cycle_history_prev,
+			},
+		},
+	},
+})
 
 -- LSP
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -50,12 +107,14 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		-- Jump to the definition of the word under your cursor.
 		--  This is where a variable was first declared, or where a function is defined, etc.
 		--  To jump back, press <C-t>.
-		lsp_map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
-		lsp_map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
-		lsp_map("gi", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
+		-- lsp_map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [d]efinition")
+		lsp_map("gd", vim.lsp.buf.definition, "[G]oto [d]efinition")
+		-- lsp_map("gr", require("telescope.builtin").lsp_references, "[G]oto [r]eferences")
+		lsp_map("gr", vim.lsp.buf.references, "[G]oto [r]eferences")
+		-- lsp_map("gi", require("telescope.builtin").lsp_implementations, "[G]oto [i]mplementation")
+		lsp_map("gi", vim.lsp.buf.implementation, "[G]oto [i]mplementation")
 		lsp_map("gR", vim.lsp.buf.rename, "[G]o [R]ename")
-		--  For example, in C this would take you to the header.
-		lsp_map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+		lsp_map("gD", vim.lsp.buf.type_definition, "[G]oto type [D]efinition")
 		lsp_map("gh", vim.lsp.buf.hover, "[G]oto [h]over")
 		lsp_map("gE", vim.diagnostic.open_float, "Show diagnostics in floating window")
 		lsp_map("[E", vim.diagnostic.goto_prev, "Go to previous diagnostic")
@@ -73,7 +132,7 @@ map("n", "gT", ":TestFile -strategy=neovim<CR>", { desc = "Run all tests in file
 local cmp = require("cmp")
 cmp.setup({
 	mapping = {
-		["<C-l>"] = cmp.mapping.confirm({ select = true }),
+		["<CR>"] = cmp.mapping.confirm({ select = true }),
 		["<Tab>"] = cmp.mapping(function(fallback)
 			if cmp.visible() then
 				cmp.select_next_item()
