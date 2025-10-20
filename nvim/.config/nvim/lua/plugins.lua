@@ -29,6 +29,7 @@ require("telescope").setup({
 			additional_args = function(_)
 				return { "--hidden" }
 			end,
+			path_display = { "filename_first" },
 		},
 		find_files = {
 			file_ignore_patterns = { "node_modules", ".git", ".venv" },
