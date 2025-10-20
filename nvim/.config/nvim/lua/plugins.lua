@@ -13,11 +13,6 @@ theme.section.header.val = {
 require("alpha").setup(theme.config)
 
 require("telescope").setup({
-	pickers = {
-		colorscheme = {
-			enable_preview = true,
-		},
-	},
 	extensions = {
 		["ui-select"] = {
 			require("telescope.themes").get_dropdown(),
@@ -34,6 +29,10 @@ require("telescope").setup({
 		find_files = {
 			file_ignore_patterns = { "node_modules", ".git", ".venv" },
 			hidden = true,
+			no_ignore = true,
+		},
+		colorscheme = {
+			enable_preview = true,
 		},
 	},
 })
