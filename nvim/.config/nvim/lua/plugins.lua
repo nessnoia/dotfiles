@@ -8,7 +8,6 @@ theme.section.header.val = {
 	"░███ ░███ ░███░░░  ░███ ░███ ░░███ ███   ░███  ░███ ░███ ░███ ",
 	"████ █████░░██████ ░░██████   ░░█████    █████ █████░███ █████",
 	"░░░ ░░░░░  ░░░░░░   ░░░░░░     ░░░░░    ░░░░░ ░░░░░ ░░░ ░░░░░",
-	t,
 }
 require("alpha").setup(theme.config)
 
@@ -20,14 +19,14 @@ require("telescope").setup({
 	},
 	pickers = {
 		live_grep = {
-			file_ignore_patterns = { "node_modules", ".git", ".venv", "*.lock" },
+			file_ignore_patterns = { "node_modules", ".git", ".venv", "*.lock", "target" },
 			additional_args = function(_)
 				return { "--hidden" }
 			end,
 			path_display = { "filename_first" },
 		},
 		find_files = {
-			file_ignore_patterns = { "node_modules", ".git", ".venv" },
+			file_ignore_patterns = { "node_modules", ".git", ".venv", "target" },
 			hidden = true,
 			no_ignore = true,
 		},
