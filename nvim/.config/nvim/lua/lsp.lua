@@ -70,9 +70,35 @@ local servers = {
 			},
 		},
 	},
+	rust_analyzer = {
+		settings = {
+			["rust-analyzer"] = {
+				imports = {
+					granularity = {
+						group = "module",
+					},
+					prefix = "self",
+				},
+				cargo = {
+					buildScripts = {
+						enable = true,
+					},
+					targetDir = true,
+					features = "all",
+				},
+				rustfmt = {
+					extraArgs = { "+nightly" },
+				},
+				procMacro = {
+					enable = true,
+				},
+			},
+		},
+	},
 }
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+capabilities.textDocument.completion.insertReplaceSupport = false
 
 -- You can add other tools here that you want Mason to install
 -- for you, so that they are available from within Neovim.
@@ -120,37 +146,9 @@ cmp.setup({
 		{ name = "path" },
 	},
 })
-
 require("luasnip").config.setup({})
 
-require("lspconfig").rust_analyzer.setup({
-	-- on_attach = on_attach,
-	settings = {
-		["rust-analyzer"] = {
-			imports = {
-				granularity = {
-					group = "module",
-				},
-				prefix = "self",
-			},
-			cargo = {
-				buildScripts = {
-					enable = true,
-				},
-				targetDir = true,
-				features = "all",
-			},
-			rustfmt = {
-				extraArgs = { "+nightly" },
-			},
-			procMacro = {
-				enable = true,
-			},
-		},
-	},
-})
-
----@type rustaceanvim.Opts
+-- -@type rustaceanvim.Opts
 -- vim.g.rustaceanvim = {
 -- 	---@type rustaceanvim.lsp.ClientOpts
 -- 	server = {

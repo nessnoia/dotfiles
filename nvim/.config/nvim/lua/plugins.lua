@@ -28,7 +28,6 @@ require("telescope").setup({
 		find_files = {
 			file_ignore_patterns = { "node_modules", ".git", ".venv", "target" },
 			hidden = true,
-			no_ignore = true,
 		},
 		colorscheme = {
 			enable_preview = true,
