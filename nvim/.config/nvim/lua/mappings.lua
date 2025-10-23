@@ -129,32 +129,28 @@ vim.api.nvim_create_autocmd("LspAttach", {
 map("n", "gt", ":TestNearest -strategy=neovim<CR>", { desc = "Run test under cursor" })
 map("n", "gT", ":TestFile -strategy=neovim<CR>", { desc = "Run all tests in file" })
 
-local cmp = require("cmp")
-cmp.setup({
-	mapping = {
-		["<CR>"] = cmp.mapping.confirm({
-			behavior = cmp.ConfirmBehavior.Replace,
-			select = false,
-		}),
-		["<Tab>"] = cmp.mapping.select_next_item(),
-		["<S-Tab"] = cmp.mapping.select_prev_item(),
-		-- ["<Tab>"] = cmp.mapping(function(fallback)
-		-- 	if cmp.visible() then
-		-- 		cmp.select_next_item()
-		-- 	else
-		-- 		fallback()
-		-- 	end
-		-- end, { "i", "s" }),
-		-- ["<S-Tab>"] = cmp.mapping(function(fallback)
-		-- 	if cmp.visible() then
-		-- 		cmp.select_prev_item()
-		-- 	else
-		-- 		fallback()
-		-- 	end
-		-- end, { "i", "s" }),
-		-- Scroll the documentation window [b]ack / [f]orward
-		["<C-b>"] = cmp.mapping.scroll_docs(-4),
-		["<C-f>"] = cmp.mapping.scroll_docs(4),
-		["<C-Space>"] = cmp.mapping.complete({}),
+-- TODO: clean up combining configs between files
+local keymap_config = {
+	keymap = {
+		preset = "none",
+
+		["<S-Tab>"] = { "select_prev", "fallback" },
+		["<Tab>"] = { "select_next", "fallback" },
+
+		-- show with a list of providers
+		["<C-space>"] = {
+			function(cmp)
+				cmp.show({ providers = { "snippets" } })
+			end,
+		},
+		["<CR>"] = { "select_and_accept", "fallback" },
+		["<C-b>"] = { "scroll_documentation_up", "fallback" },
+		["<C-f>"] = { "scroll_documentation_down", "fallback" },
+		-- ["<C-k>"] = { "show_signature", "hide_signature", "fallback" },
 	},
-})
+}
+
+local blink_config = vim.tbl_deep_extend("force", _G.blink_config, keymap_config)
+
+local blink = require("blink.cmp")
+blink.setup(blink_config)

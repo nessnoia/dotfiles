@@ -181,33 +181,15 @@ require("lazy").setup({
 	-- Autoformat
 	"stevearc/conform.nvim",
 
-	-- Allows extra capabilities provided by nvim-cmp
+	-- Completion
 	{
-		"hrsh7th/nvim-cmp",
+		"saghen/blink.cmp",
 		event = "InsertEnter",
-		dependencies = {
-			-- Snippet Engine & its associated nvim-cmp source
-			{
-				"L3MON4D3/LuaSnip",
-				build = (function()
-					-- Build Step is needed for regex support in snippets.
-					-- This step is not supported in many windows environments.
-					-- Remove the below condition to re-enable on windows.
-					if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
-						return
-					end
-					return "make install_jsregexp"
-				end)(),
-			},
-			"saadparwaiz1/cmp_luasnip",
+		-- optional: provides snippets for the snippet source
+		dependencies = { "rafamadriz/friendly-snippets" },
 
-			-- Adds other completion capabilities.
-			--  nvim-cmp does not ship with all sources by default. They are split
-			--  into multiple repos for maintenance purposes.
-			"hrsh7th/cmp-nvim-lsp-signature-help",
-			"hrsh7th/cmp-nvim-lsp",
-			"hrsh7th/cmp-path",
-		},
+		-- use a release tag to download pre-built binaries
+		version = "1.*",
 	},
 
 	-- Collection of various small independent plugins/modules

@@ -96,9 +96,6 @@ local servers = {
 		},
 	},
 }
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
-capabilities.textDocument.completion.insertReplaceSupport = false
 
 -- You can add other tools here that you want Mason to install
 -- for you, so that they are available from within Neovim.
@@ -115,38 +112,55 @@ require("mason-lspconfig").setup({
 			-- This handles overriding only values explicitly passed
 			-- by the server configuration above. Useful when disabling
 			-- certain features of an LSP (for example, turning off formatting for ts_ls)
-			server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
+			server.capabilities = require("blink.cmp").get_lsp_capabilities(server.capabilities)
 			require("lspconfig")[server_name].setup(server)
 		end,
 	},
 })
+-- local function log(msg)
+-- 	local fp = io.open(vim.fn.stdpath("cache") .. "/debug.log", "a")
+-- 	fp:write(msg .. "\n")
+-- 	fp:close()
+-- end
 
-local cmp = require("cmp")
-cmp.setup({
-	preselect = cmp.PreselectMode.None,
-	snippet = {
-		expand = function(args)
-			require("luasnip").lsp_expand(args.body)
-		end,
-	},
-	-- window = {
-	-- 	documentation = cmp.config.window.bordered(),
-	-- },
-	performance = { max_view_entries = 15 },
-	completion = { completeopt = "menu,menuone,noselect" },
-	sources = {
-		{
-			name = "lazydev",
-			-- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
-			group_index = 0,
+_G.blink_config = {
+	completion = {
+		keyword = {
+			range = "full",
 		},
-		{ name = "nvim_lsp" },
-		{ name = "nvim_lsp_signature_help" },
-		{ name = "luasnip" },
-		{ name = "path" },
+		list = {
+			selection = {
+				preselect = false,
+				auto_insert = true,
+			},
+		},
+		documentation = {
+			auto_show = true,
+			auto_show_delay_ms = 800,
+		},
+		menu = {
+			draw = {
+				columns = { { "label", gap = 1 }, { "kind" } },
+			},
+		},
+		trigger = {
+			show_on_backspace = true,
+		},
 	},
-})
-require("luasnip").config.setup({})
+	signature = {
+		enabled = true,
+		window = {
+			show_documentation = false,
+		},
+	},
+	fuzzy = {
+		sorts = {
+			"exact",
+			"score",
+			"sort_text",
+		},
+	},
+}
 
 -- -@type rustaceanvim.Opts
 -- vim.g.rustaceanvim = {
