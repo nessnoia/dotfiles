@@ -160,6 +160,23 @@ _G.blink_config = {
 			"sort_text",
 		},
 	},
+	sources = {
+		transform_items = function(ctx, items)
+			for _, item in ipairs(items) do
+				if item.textEdit and item.additionalTextEdits then
+					if item.textEdit.replace then
+						local s = ctx.bounds.start_col
+						local e = s + ctx.bounds.length - 1
+						local typed_fragment = ctx.line:sub(s, e)
+
+						local start_replace = item.textEdit.replace.start.character
+						item.textEdit.replace["end"].character = start_replace + #typed_fragment
+					end
+				end
+			end
+			return items
+		end,
+	},
 }
 
 -- -@type rustaceanvim.Opts
