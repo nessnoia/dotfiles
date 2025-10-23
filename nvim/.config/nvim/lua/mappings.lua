@@ -45,6 +45,8 @@ map("n", "<Leader>x", ":bp<bar>sp<bar>bn<bar>bd<CR>", { desc = "Close buffer wit
 -- Accelerated scrolling
 map("n", "J", "5j")
 map("n", "K", "5k")
+map("v", "J", "5j")
+map("v", "K", "5k")
 map("n", "H", "5h")
 map("n", "L", "5l")
 
