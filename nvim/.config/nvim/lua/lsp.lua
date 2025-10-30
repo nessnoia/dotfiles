@@ -96,6 +96,9 @@ local servers = {
 		},
 	},
 }
+for server_name, opts in pairs(servers) do
+	vim.lsp.config(server_name, opts)
+end
 
 -- You can add other tools here that you want Mason to install
 -- for you, so that they are available from within Neovim.
@@ -104,19 +107,8 @@ vim.list_extend(ensure_installed, {
 	"stylua", -- Used to format Lua code
 })
 require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
+require("mason-lspconfig").setup()
 
-require("mason-lspconfig").setup({
-	handlers = {
-		function(server_name)
-			local server = servers[server_name] or {}
-			-- This handles overriding only values explicitly passed
-			-- by the server configuration above. Useful when disabling
-			-- certain features of an LSP (for example, turning off formatting for ts_ls)
-			server.capabilities = require("blink.cmp").get_lsp_capabilities(server.capabilities)
-			require("lspconfig")[server_name].setup(server)
-		end,
-	},
-})
 -- local function log(msg)
 -- 	local fp = io.open(vim.fn.stdpath("cache") .. "/debug.log", "a")
 -- 	fp:write(msg .. "\n")
@@ -125,9 +117,9 @@ require("mason-lspconfig").setup({
 
 _G.blink_config = {
 	completion = {
-		keyword = {
-			range = "full",
-		},
+		-- keyword = {
+		-- 	range = "full",
+		-- },
 		list = {
 			selection = {
 				preselect = false,
@@ -162,15 +154,26 @@ _G.blink_config = {
 	},
 	sources = {
 		transform_items = function(ctx, items)
-			for _, item in ipairs(items) do
-				if item.textEdit and item.additionalTextEdits then
-					if item.textEdit.replace then
-						local s = ctx.bounds.start_col
-						local e = s + ctx.bounds.length - 1
-						local typed_fragment = ctx.line:sub(s, e)
+			local cursor_col = ctx.cursor[2]
 
+			for _, item in ipairs(items) do
+				if item.textEdit and item.textEdit.insert then
+					-- Both start and end are inclusive indexes
+					local s = ctx.bounds.start_col
+					local e = s + ctx.bounds.length - 1
+					local typed_fragment = ctx.line:sub(s, e)
+
+					-- Plus 2 for lua 1 based indexing, and then for getting the position after the letter the
+					-- cursor is technically on (I think that's why.. but determined this by testing prints)
+					local cursor_idx = cursor_col + 2 - s
+					local word_after_cursor = typed_fragment:sub(cursor_idx)
+
+					-- If the text after the prefix match matches the insertion item, replace it, otherwise insert
+					-- before the item.
+					if item.textEdit.newText:match(word_after_cursor) then
 						local start_replace = item.textEdit.replace.start.character
 						item.textEdit.replace["end"].character = start_replace + #typed_fragment
+						item.textEdit.range = item.textEdit.replace
 					end
 				end
 			end
