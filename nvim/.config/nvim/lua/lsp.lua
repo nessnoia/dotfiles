@@ -48,11 +48,6 @@ require("conform").formatters.taplo = {
 	args = 'format --option indent_string="    " -',
 }
 
--- require("conform").formatters.rustfmt = {
--- 	command = "rustup",
--- 	args = "run nightly rustfmt",
--- }
-
 require("mason").setup()
 
 local servers = {
